@@ -1,6 +1,6 @@
-import {LightningElement} from "lwc";
+import {LightningElement, api, track, wire} from "lwc";
 
-// import getBoatTypes from the BoatDataService => getBoatTypes method';
+ import getBoatTypes from '@salesforce/apex/BoatDataService.getBoatTypes';
 export default class BoatSearchForm extends LightningElement {
     selectedBoatTypeId = '';
 
@@ -8,17 +8,21 @@ export default class BoatSearchForm extends LightningElement {
     error = undefined;
     searchOptions = [{label: 'All Types', value: ''}];
 
-    // Wire a custom Apex method
+    @wire(getBoatTypes)
     boatTypes({ error, data }) {
-        // if (data) {
-        //     this.searchOptions = data.map(type => {
-        //         // TODO: complete the logic
-        //     });
-        //     this.searchOptions.unshift({ label: 'All Types', value: '' });
-        // } else if (error) {
-        //     this.searchOptions = undefined;
-        //     this.error = error;
-        // }
+        if (data) {
+            console.log('# this.searchOptions 1 = ' + this.searchOptions);
+            this.searchOptions = data.map(boatType => {
+                console.log('# boatType = ' + JSON.stringify(boatType));
+
+                return {label: boatType.Name, value: boatType.Name};
+            });
+            console.log('# this.searchOptions 2 = ' + JSON.stringify(this.searchOptions));
+            this.searchOptions.unshift({ label: 'All Types', value: '' });
+        } else if (error) {
+            this.searchOptions = undefined;
+            this.error = error;
+        }
     }
 
     // Fires event that the search option has changed.

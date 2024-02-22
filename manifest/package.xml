@@ -179,6 +179,9 @@
         <members>WorkStep</members>
         <members>WorkStepTemplate</members>
         <members>WorkThanks</members>
+        <members>BoatReview__c</members>
+        <members>BoatType__c</members>
+        <members>Boat__c</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -964,6 +967,9 @@
     <types>
         <members>*</members>
         <name>LightningMessageChannel</name>
+    </types>
+    <types>
+        <name>WebLink</name>
     </types>
     <version>59.0</version>
 </Package>
