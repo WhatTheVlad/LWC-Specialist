@@ -470,9 +470,6 @@
         <name>AppMenu</name>
     </types>
     <types>
-        <name>AssignmentRule</name>
-    </types>
-    <types>
         <members>Case</members>
         <members>Lead</members>
         <name>AutoResponseRules</name>
@@ -961,11 +958,12 @@
         <name>Translations</name>
     </types>
     <types>
-        <name>WebLink</name>
-    </types>
-    <types>
         <members>Case.ChangePriorityToHigh</members>
         <name>WorkflowFieldUpdate</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>LightningMessageChannel</name>
     </types>
     <version>59.0</version>
 </Package>
