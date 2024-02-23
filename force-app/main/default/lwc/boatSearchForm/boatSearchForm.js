@@ -11,13 +11,12 @@ export default class BoatSearchForm extends LightningElement {
     @wire(getBoatTypes)
     boatTypes({ error, data }) {
         if (data) {
-            console.log('# this.searchOptions 1 = ' + this.searchOptions);
             this.searchOptions = data.map(boatType => {
-                console.log('# boatType = ' + JSON.stringify(boatType));
-
-                return {label: boatType.Name, value: boatType.Name};
+                return {
+                    label: boatType.Name, value: boatType.Id
+                };
             });
-            console.log('# this.searchOptions 2 = ' + JSON.stringify(this.searchOptions));
+
             this.searchOptions.unshift({ label: 'All Types', value: '' });
         } else if (error) {
             this.searchOptions = undefined;
@@ -25,12 +24,13 @@ export default class BoatSearchForm extends LightningElement {
         }
     }
 
-    // Fires event that the search option has changed.
-    // passes boatTypeId (value of this.selectedBoatTypeId) in the detail
     handleSearchOptionChange(event) {
-        // Create the const searchEvent
-        // searchEvent must be the new custom event search
-        // searchEvent;
-        // this.dispatchEvent(searchEvent);
+        this.selectedBoatTypeId = event.detail.value
+
+        const searchEvent = new CustomEvent("searchboats", {
+                detail: this.selectedBoatTypeId
+            });
+
+        this.dispatchEvent(searchEvent);
     }
 }
