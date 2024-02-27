@@ -8,6 +8,10 @@ export default class BoatSearch extends NavigationMixin(LightningElement)
     isLoading = false;
     selectedBoatTypeId = '';
 
+    connectedCallback()
+    {
+    }
+
     handleLoading() {
         this.isLoading = true;
     }
@@ -19,6 +23,7 @@ export default class BoatSearch extends NavigationMixin(LightningElement)
 
     searchBoats(event) {
         this.selectedBoatTypeId = event.detail;
+
     }
 
 

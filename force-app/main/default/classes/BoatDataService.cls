@@ -5,6 +5,7 @@ public with sharing class BoatDataService
     public static final String PRICE_TYPE = 'Price';
     public static final String TYPE_TYPE = 'Type';
 
+    @AuraEnabled(Cacheable=true)
     public static List<Boat__c> getBoats(String boatTypeId)
     {
         // Without an explicit boatTypeId, the full list is desired
@@ -104,7 +105,7 @@ public with sharing class BoatDataService
         ];
     }
 
-    // Assume this may be an API that return this data, not a SOQL query
+    @AuraEnabled(Cacheable=true)
     public static String getBoatsByLocation(Decimal latitude, Decimal longitude, String boatTypeId)
     {
         // Without an explicit boatTypeId, the full list is desired
@@ -117,6 +118,7 @@ public with sharing class BoatDataService
         return JSON.serialize(Database.query(query));
     }
 
+    @AuraEnabled
     public static String updateBoatList(Object data)
     {
         List<Boat__c> boatsForUpdate = (List<Boat__c>) JSON.deserialize(

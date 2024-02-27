@@ -2,9 +2,11 @@
     <lightning-layout>
         <lightning-layout-item class="slds-align-middle">
             <lightning-combobox
+                    name="boatTypes"
                     class="slds-align-middle slds-text-align_left"
                     variant="standard"
-                    value={value}
+                    value={selectedBoatTypeId}
+                    placeholder="All Types"
                     options={searchOptions}
                     onchange={handleSearchOptionChange}
             >

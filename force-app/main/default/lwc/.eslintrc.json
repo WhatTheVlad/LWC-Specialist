@@ -9,6 +9,15 @@
       "env": {
         "node": true
       }
+    },
+    {
+      "files": ["boat*.js"],
+      "rules": {
+        "@lwc/lwc/no-api-reassignments": "off"
+      },
+      "env": {
+        "node": true
+      }
     }
   ]
 }

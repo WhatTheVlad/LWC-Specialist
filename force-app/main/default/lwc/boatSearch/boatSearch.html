@@ -18,7 +18,7 @@
 
                 <p class="slds-var-p-horizontal_small">
                     <c-boat-search-form
-                    onsearchboats= {searchBoats}
+                    onsearchboats={searchBoats}
                     >
                     </c-boat-search-form>
                 </p>
@@ -33,9 +33,12 @@
                 >
                 </lightning-spinner>
             </template>
-
-            <!-- boatSearchResults goes here -->
-            <!-- onloading={handleLoading} ondoneloading={handleDoneLoading} -->
+            <c-boat-search-results
+                    boat-type-id={selectedBoatTypeId}
+                    onloading={handleLoading}
+                    ondoneloading={handleDoneLoading}
+            >
+            </c-boat-search-results>
         </lightning-layout-item>
     </lightning-layout>
 
