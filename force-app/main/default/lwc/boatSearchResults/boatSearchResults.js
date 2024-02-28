@@ -1,10 +1,10 @@
-import {LightningElement, api, wire} from "lwc";
+import { LightningElement, wire, api } from 'lwc';
+import { MessageContext, publish } from 'lightning/messageService';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getBoats from '@salesforce/apex/BoatDataService.getBoats';
 import BoatMC from '@salesforce/messageChannel/BoatMessageChannel__c';
-import { MessageContext, publish } from "lightning/messageService";
 import { refreshApex } from '@salesforce/apex';
 import updateBoatList from '@salesforce/apex/BoatDataService.updateBoatList';
-import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 const SUCCESS_TITLE = 'Success';
 const MESSAGE_SHIP_IT = 'Ship it!';
@@ -14,14 +14,7 @@ const ERROR_VARIANT = 'error';
 
 export default class BoatSearchResults extends LightningElement {
     selectedBoatId;
-    columns = [
-        { label: 'Name', fieldName: 'Name', editable: true },
-        { label: 'Length', fieldName: 'Length__c', type: 'number', editable: true },
-        { label: 'Price', fieldName: 'Price__c', type: 'currency', editable: true },
-        { label: 'Description', fieldName: 'Description__c', type: 'text', editable: true },
-    ];
-
-    @api boatTypeId = '';
+    boatTypeId = '';
     boats;
     isLoading = false;
 
@@ -30,26 +23,46 @@ export default class BoatSearchResults extends LightningElement {
     @wire(MessageContext)
     messageContext;
 
+    columns = [
+        { label: 'Name', fieldName: 'Name', editable: true },
+        { label: 'Length', fieldName: 'Length__c', type: 'number', editable: true },
+        { label: 'Price', fieldName: 'Price__c', type: 'currency', editable: true },
+        { label: 'Description', fieldName: 'Description__c', type: 'text', editable: true },
+    ];
+
     @wire(getBoats, {boatTypeId : "$boatTypeId"})
     wiredBoats(result) {
         this.boats = result.data;
+
+        if (result.error) {
+            this.error = result.error;
+            this.boats = undefined;
+        }
+
+        this.isLoading = false;
+        this.notifyLoading(this.isLoading);
     }
 
-    // public function that updates the existing boatTypeId property
-    // uses notifyLoading
-    searchBoats(boatTypeId) { }
-
-    // this public function must refresh the boats asynchronously
-    // uses notifyLoading
-    refresh() {
-        this.notifyLoading(true);
-        refreshApex(this.boats);
+    @api
+    searchBoats(boatTypeId) {
+        this.isLoading = true;
+        this.notifyLoading(this.isLoading);
+        this.boatTypeId = boatTypeId;
     }
 
-    // this function must update selectedBoatId and call sendMessageService
+    async refresh() {
+        this.isLoading = true;
+        this.notifyLoading(this.isLoading );
+
+        await refreshApex(this.boats);
+
+        this.isLoading = false;
+        this.notifyLoading(this.isLoading);
+    }
+
     updateSelectedTile(event) {
          this.selectedBoatId = event.detail.boatId;
-        // this.sendMessageService(this.selectedBoatId);
+         this.sendMessageService(this.selectedBoatId);
     }
 
     sendMessageService(boatId) {
@@ -72,14 +85,16 @@ export default class BoatSearchResults extends LightningElement {
                     })
                 )
                 this.draftValues = [];
-                this.refresh();
+                return this.refresh();
             })
             .catch(error =>
             {
+                this.error = error;
+
                 this.dispatchEvent(
                     new ShowToastEvent({
                         title: ERROR_TITLE,
-                        message: 'Record edits could not be saved.',
+                        message: 'Ooops',
                         variant: ERROR_VARIANT
                     })
                 )

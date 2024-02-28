@@ -1,6 +1,5 @@
-import {LightningElement} from "lwc";
+import { LightningElement } from "lwc";
 import { NavigationMixin } from 'lightning/navigation';
-import BOATMC from '@salesforce/messageChannel/BoatMessageChannel__c';
 
 export default class BoatSearch extends NavigationMixin(LightningElement)
 {
@@ -20,12 +19,11 @@ export default class BoatSearch extends NavigationMixin(LightningElement)
         this.isLoading = false;
     }
 
-
     searchBoats(event) {
-        this.selectedBoatTypeId = event.detail;
-
+        const boatTypeId = event.detail.boatTypeId;
+        let boatSearchResultsComp = this.template.querySelector("c-boat-search-results");
+        boatSearchResultsComp.searchBoats(boatTypeId);
     }
-
 
     createNewBoat() {
         this[NavigationMixin.Navigate]({

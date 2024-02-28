@@ -18,7 +18,7 @@
 
                 <p class="slds-var-p-horizontal_small">
                     <c-boat-search-form
-                    onsearchboats={searchBoats}
+                            onsearch={searchBoats}
                     >
                     </c-boat-search-form>
                 </p>
@@ -34,7 +34,6 @@
                 </lightning-spinner>
             </template>
             <c-boat-search-results
-                    boat-type-id={selectedBoatTypeId}
                     onloading={handleLoading}
                     ondoneloading={handleDoneLoading}
             >

@@ -1,4 +1,4 @@
-import {LightningElement, api, track, wire} from "lwc";
+import {LightningElement, track, wire} from "lwc";
 import getBoatTypes from '@salesforce/apex/BoatDataService.getBoatTypes';
 
 export default class BoatSearchForm extends LightningElement {
@@ -6,7 +6,7 @@ export default class BoatSearchForm extends LightningElement {
 
     // Private
     error = undefined;
-    searchOptions = [{label: 'All Types', value: ''}];
+    @track searchOptions = [{label: 'All Types', value: ''}];
 
     @wire(getBoatTypes)
     boatTypes({ error, data }) {
@@ -27,8 +27,10 @@ export default class BoatSearchForm extends LightningElement {
     handleSearchOptionChange(event) {
         this.selectedBoatTypeId = event.detail.value
 
-        const searchEvent = new CustomEvent("searchboats", {
-                detail: this.selectedBoatTypeId
+        const searchEvent = new CustomEvent("search", {
+                detail: {
+                    boatTypeId: this.selectedBoatTypeId
+                }
             });
 
         this.dispatchEvent(searchEvent);

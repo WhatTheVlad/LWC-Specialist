@@ -1,5 +1,5 @@
 <template>
-    <lightning-tabset class="slds-tabs_scoped" variant="scoped">
+    <lightning-tabset if:true={boats} class="slds-tabs_scoped" variant="scoped">
         <lightning-tab label="Gallery">
             <div class="slds-scrollable_y">
                 <lightning-layout
@@ -16,9 +16,9 @@
                                 padding="around-small"
                         >
                             <c-boat-tile
-                            selected-boat-id={selectedBoatId}
-                            boat={boat}
-                            onboatselect={updateSelectedTile}
+                                    selected-boat-id={selectedBoatId}
+                                    boat={boat}
+                                    onboatselect={updateSelectedTile}
                             >
                             </c-boat-tile>
                         </lightning-layout-item>
@@ -40,7 +40,7 @@
 
         </lightning-tab>
         <lightning-tab label="Boats Near Me">
-            <!-- boatsNearMe component goes here -->
+            <c-boats-near-me boat-type-id={boatTypeId}></c-boats-near-me>
         </lightning-tab>
     </lightning-tabset>
 </template>
