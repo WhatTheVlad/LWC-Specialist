@@ -81,6 +81,7 @@ public with sharing class BoatDataService
         return [SELECT Name, Id FROM BoatType__c WITH SECURITY_ENFORCED ORDER BY Name];
     }
 
+    @AuraEnabled
     public static List<BoatReview__c> getAllReviews(Id boatId)
     {
         return
